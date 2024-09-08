@@ -88,7 +88,7 @@ const SignUp = ({navigation}) => {
             <WashButton
               title="Sign Up"
               customBtnStyle={{alignSelf: 'center', marginTop: 20}}
-              onPress={() => navigation.navigate('Login')}
+              onPress={() => navigation.navigate('Home')}
             />
 
           </View>
