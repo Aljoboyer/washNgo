@@ -18,6 +18,37 @@ const Login = ({navigation}) => {
   const [email, setEmail] = useState('')
   const [passWord, setPassWord] = useState('')
 
+  // -----------Error State------------//
+  const [emailErr, setEmailErr] = useState('')
+  const [passWordErr, setPassWordErr] = useState('')
+
+  const logInHandler = async () => {
+    console.log('Login Here')
+  }
+  const validateHandler = () => {
+    let isValid = true
+
+    if(!email && !passWord){
+      setEmailErr('Email is required')
+      setPassWordErr('Password is required')
+      isValid = false
+      return
+    }
+    if(!email.match(/\S+@\S+\.\S+/) || !email){
+      setEmailErr('Please input a valid email')
+      isValid = false
+      
+    }
+    if(!passWord){
+      setPassWordErr('Enter Valid Password')
+      isValid = false
+      
+    }
+    if(isValid){
+      logInHandler()
+    }
+  }
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
         <StatusBar
@@ -25,7 +56,7 @@ const Login = ({navigation}) => {
           barStyle={'dark-content'}
           backgroundColor="white" 
         />
-      <KeyboardAvoidingView >
+      <KeyboardAvoidingView style={{backgroundColor: 'white'}}>
           <AuthHeader
             title="Sign In"
             suggestionTxt="Hi ! Welcome back, you"
@@ -35,31 +66,42 @@ const Login = ({navigation}) => {
           <View style={{paddingHorizontal: 20, marginTop: 10}}>
               <WashInput
               icon1={<AntDesign name='mail'  color={COLORS.GRAY} size={22}/>}
-              onChangeText={(text) => setEmail(email)}
+              onChangeText={(text) => {
+                setEmail(text.trim())
+                setEmailErr('')
+              }}
               placeholder="xyz@gmail.com"
               keyboardType="default"
               label="Email"
               customStyle2={{marginTop: 4}}
+              error={emailErr}
+              defaultValue={email}
             />
             <WashInput
               icon1={<Feather name='lock'  color={COLORS.GRAY} size={22}/>}
-              onChangeText={(text) => setEmail(email)}
+              onChangeText={(text) => {
+                setPassWord(text.trim())
+                setPassWordErr('')
+              }}
               placeholder="Password"
               keyboardType="default"
               // customStyle2={{marginTop: 4}}
               customStyle3={{marginTop: 20}}
               label="Password"
               secureTextEntry={true}
+              error={passWordErr}
+              defaultValue={passWord}
               icon2={<SimpleLineIcons name='eye'  color={COLORS.GRAY} size={22}/>}
             />
 
-            <TouchableOpacity style={Commonstyles.FlexEnd}>
+            <TouchableOpacity style={[Commonstyles.FlexEnd, {backgroundColor: 'white'}]}>
                 <WashText title="Forgot password ?" preset='title3' customStyle={{color: COLORS.DARKBLACK, fontSize: 14,  textDecorationLine: "underline", marginTop: 10}}/>
             </TouchableOpacity>
+
             <WashButton
               title="Sign In"
               customBtnStyle={{alignSelf: 'center', marginTop: 20}}
-              onPress={() => navigation.navigate('Login')}
+              onPress={() => validateHandler()}
             />
 
             <View style={[Commonstyles.FlexCenter, {marginTop: 10}]}>

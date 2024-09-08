@@ -15,10 +15,45 @@ import AuthBottomContainer from '../../components/AuthBottomContainer/AuthBottom
 const {width: screenWidth, height: screenHeight} = Dimensions.get('screen');
 
 const SignUp = ({navigation}) => {
+  const nameRegex = /^[A-Za-z\s]*$/
   const [checked, setChecked] = useState(false)
   const [email, setEmail] = useState('')
   const [passWord, setPassWord] = useState('')
   const [name, setName] = useState('')
+
+   // -----------Error State------------//
+   const [emailErr, setEmailErr] = useState('')
+   const [passWordErr, setPassWordErr] = useState('')
+   const [nameErr, setNameErr] = useState('')
+ 
+   const signUpHandler = async () => {
+     console.log('Login Here')
+   }
+
+   const validateHandler = () => {
+     let isValid = true
+ 
+     if(!email && !passWord ){
+       setEmailErr('Email is required')
+       setPassWordErr('Password is required')
+       isValid = false
+       return
+     }
+     if(!email.match(/\S+@\S+\.\S+/) || !email){
+       setEmailErr('Please input a valid email')
+       isValid = false
+       
+     }
+     
+     if(!passWord){
+       setPassWordErr('Enter Valid Password')
+       isValid = false
+       
+     }
+     if(isValid){
+       signUpHandler()
+     }
+   }
 
 
   return (
@@ -38,32 +73,37 @@ const SignUp = ({navigation}) => {
           <View style={{paddingHorizontal: 20, marginTop: 10}}>
           <WashInput
               icon1={<Feather name='user'  color={COLORS.GRAY} size={22}/>}
-              onChangeText={(text) => setEmail(email)}
+              onChangeText={(text) => setName(text.trimStart())}
               placeholder="Enter your name"
               keyboardType="default"
               label="Name"
-              customStyle2={{marginTop: 4}}
-              
+              error={nameErr}
+              defaultValue={name}
             />
               <WashInput
               icon1={<AntDesign name='mail'  color={COLORS.GRAY} size={22}/>}
-              onChangeText={(text) => setEmail(email)}
+              onChangeText={(text) => {
+                setEmail(text.trim())
+                setEmailErr('')
+              }}
               placeholder="xyz@gmail.com"
               keyboardType="default"
               label="Email"
-              customStyle2={{marginTop: 4}}
-              customStyle3={{marginTop: 10}}
-
+              error={emailErr}
+              defaultValue={email}
             />
             <WashInput
               icon1={<Feather name='lock'  color={COLORS.GRAY} size={22}/>}
-              onChangeText={(text) => setEmail(email)}
+              onChangeText={(text) => {
+                setPassWord(text.trim())
+                setPassWordErr('')
+              }}
               placeholder="Password"
               keyboardType="default"
-              // customStyle2={{marginTop: 4}}
-              customStyle3={{marginTop: 10}}
               label="Password"
               secureTextEntry={true}
+              error={passWordErr}
+              defaultValue={passWord}
               icon2={<SimpleLineIcons name='eye'  color={COLORS.GRAY} size={22}/>}
             />
 
@@ -88,7 +128,7 @@ const SignUp = ({navigation}) => {
             <WashButton
               title="Sign Up"
               customBtnStyle={{alignSelf: 'center', marginTop: 20}}
-              onPress={() => navigation.navigate('Home')}
+              onPress={() => validateHandler()}
             />
 
           </View>

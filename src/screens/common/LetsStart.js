@@ -48,7 +48,7 @@ const LetsStart = ({navigation}) => {
                 title="Already  have an account?" 
                 preset='small'
               />
-              <Pressable>
+              <Pressable     onPress={() => navigation.navigate('Login')}>
                 <WashText
                 title="Sign in" 
                 preset='title1'

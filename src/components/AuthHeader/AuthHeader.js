@@ -17,6 +17,7 @@ const AuthHeader = ({title, suggestionTxt, suggestionTxt2}) => {
             <WashText
             title={title} 
             preset='title'
+            customStyle={{fontSize: 25}}
             />
             <WashText
             title={suggestionTxt} 
