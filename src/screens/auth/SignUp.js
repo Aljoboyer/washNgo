@@ -1,6 +1,5 @@
-import { View, StatusBar, ScrollView, TouchableOpacity,Dimensions, Image, KeyboardAvoidingView } from 'react-native'
+import { View, StatusBar, SafeAreaView, TouchableOpacity,Dimensions, Image, KeyboardAvoidingView } from 'react-native'
 import React, { useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import AuthHeader from '../../components/AuthHeader/AuthHeader'
 import WashInput from '../../components/WashInput/WashInput'
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -10,42 +9,76 @@ import Feather from 'react-native-vector-icons/Feather';
 import WashButton from '../../components/WashButton/WashButton'
 import { Commonstyles } from '../../Styles/CommonStyles'
 import WashText from '../../components/WashText/WashText'
-import { AuthStyles } from '../../Styles/AuthStyles'
 import AuthBottomContainer from '../../components/AuthBottomContainer/AuthBottomContainer'
+import { useSignUpMutation } from '../../redux/api/authApi';
+import { useDispatch } from 'react-redux';
+import { saveuserInfoInfo } from '../../redux/slices/userSlice';
 const {width: screenWidth, height: screenHeight} = Dimensions.get('screen');
 
 const SignUp = ({navigation}) => {
   const nameRegex = /^[A-Za-z\s]*$/
+  const dispatch = useDispatch()
   const [checked, setChecked] = useState(false)
-  const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
   const [passWord, setPassWord] = useState('')
   const [name, setName] = useState('')
 
    // -----------Error State------------//
-   const [emailErr, setEmailErr] = useState('')
+   const [phoneErr, setPhoneErr] = useState('')
    const [passWordErr, setPassWordErr] = useState('')
    const [nameErr, setNameErr] = useState('')
- 
+
+   const [isLoading, setIsLoading] = useState(false)
+
+   const [addSignUp, { }] = useSignUpMutation();
+
+
    const signUpHandler = async () => {
-     console.log('Login Here')
+      // console.log('SIGNU Here')
+      const requestObj = {
+        phone: phone,
+        name: name,
+        password: passWord
+    }
+      let response = await addSignUp(requestObj);
+
+      console.log("sign up response", response)
+      if(response?.data?.data?.id){
+        dispatch(saveuserInfoInfo(response?.data?.data))
+        setIsLoading(false)
+        navigation.navigate('Home')
+      }
+      else{
+        setPhoneErr('Phone Number is Already Exists')
+        setIsLoading(false)
+      }
    }
 
    const validateHandler = () => {
+    setIsLoading(true)
      let isValid = true
  
-     if(!email && !passWord ){
-       setEmailErr('Email is required')
+     if(!phone && !passWord && !name){
+       setPhoneErr('Phone is required')
        setPassWordErr('Password is required')
+       setNameErr('Name is required')
        isValid = false
+       setIsLoading(false)
        return
      }
-     if(!email.match(/\S+@\S+\.\S+/) || !email){
-       setEmailErr('Please input a valid email')
-       isValid = false
-       
-     }
-     
+     if (nameRegex.test(name) === false || name.trim().length === 0 ) {
+      setNameErr('Please write proper name')
+      setIsLoading(false)
+      isValid = false
+    }
+    if (!(/^\d+$/).test(phone)) {
+      setPhoneErr('Please Enter valid phone number')
+      isValid = false
+      setIsLoading(false)
+      return;
+    }
      if(!passWord){
+      setIsLoading(false)
        setPassWordErr('Enter Valid Password')
        isValid = false
        
@@ -73,25 +106,31 @@ const SignUp = ({navigation}) => {
           <View style={{paddingHorizontal: 20, marginTop: 10}}>
           <WashInput
               icon1={<Feather name='user'  color={COLORS.GRAY} size={22}/>}
-              onChangeText={(text) => setName(text.trimStart())}
+              onChangeText={(text) => {
+                setName(text.trimStart())
+                setNameErr('')
+              }}
               placeholder="Enter your name"
               keyboardType="default"
               label="Name"
               error={nameErr}
               defaultValue={name}
             />
+              
               <WashInput
-              icon1={<AntDesign name='mail'  color={COLORS.GRAY} size={22}/>}
+              icon1={<AntDesign name='phone'  color={COLORS.GRAY} size={22}/>}
               onChangeText={(text) => {
-                setEmail(text.trim())
-                setEmailErr('')
+                setPhone(text.trimStart())
+                setPhoneErr('')
               }}
-              placeholder="xyz@gmail.com"
-              keyboardType="default"
-              label="Email"
-              error={emailErr}
-              defaultValue={email}
+              placeholder="Enter phone"
+              keyboardType="number-pad"
+              label="Phone"
+              error={phoneErr}
+              defaultValue={phone}
+              maxLength={10}
             />
+
             <WashInput
               icon1={<Feather name='lock'  color={COLORS.GRAY} size={22}/>}
               onChangeText={(text) => {
@@ -126,9 +165,13 @@ const SignUp = ({navigation}) => {
             </View>
 
             <WashButton
-              title="Sign Up"
+              title={isLoading ? "Loading..." : 'Sign Up'}
               customBtnStyle={{alignSelf: 'center', marginTop: 20}}
-              onPress={() => validateHandler()}
+              onPress={() => {
+                if(!isLoading){
+                  validateHandler()
+                }
+              }}
             />
 
           </View>

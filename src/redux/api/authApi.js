@@ -3,14 +3,37 @@ import { api } from "./api";
 const authApi = api.injectEndpoints({ 
   endpoints: (builder) => ({
  
-    // getIndividualTeam: builder.query({
-    //   query: (id) => `/user/v1/individual-team-data?id=${id}`,
-    //   providesTags: ['getTeams'],
-    // }),
+    signUp: builder.mutation({
+      query: (data ) => ({
+        url: '/register',
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
+        body: data,
+      }),
+    //   invalidatesTags: [''],
+    }),
+
+    login: builder.mutation({
+      query: (data ) => ({
+        url: '/login',
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
+        body: data,
+      }),
+    //   invalidatesTags: [''],
+    }),
+
 
   }),
 });
 
 export const {
-  // useGetIndividualTeamQuery,
+  useSignUpMutation,
+  useLoginMutation
 } = authApi;

@@ -12,32 +12,65 @@ import { Commonstyles } from '../../Styles/CommonStyles'
 import WashText from '../../components/WashText/WashText'
 import { AuthStyles } from '../../Styles/AuthStyles'
 import AuthBottomContainer from '../../components/AuthBottomContainer/AuthBottomContainer'
+import { useLoginMutation } from '../../redux/api/authApi'
+import { useDispatch } from 'react-redux'
+import { saveuserInfoInfo } from '../../redux/slices/userSlice'
 const {width: screenWidth, height: screenHeight} = Dimensions.get('screen');
 
 const Login = ({navigation}) => {
-  const [email, setEmail] = useState('')
+  const dispatch = useDispatch()
+
+  const [phone, setPhone] = useState('')
   const [passWord, setPassWord] = useState('')
 
   // -----------Error State------------//
-  const [emailErr, setEmailErr] = useState('')
+  const [phoneErr, setPhoneErr] = useState('')
   const [passWordErr, setPassWordErr] = useState('')
+
+  const [isLoading, setIsLoading] = useState(false)
+
+   const [loginCall, { }] = useLoginMutation();
 
   const logInHandler = async () => {
     console.log('Login Here')
+    const requestObj = {
+      phone: phone,
+      password: passWord
+  }
+    let response = await loginCall(requestObj);
+    
+    console.log("login response", response)
+    if(response?.data?.data?.id){
+      dispatch(saveuserInfoInfo(response?.data?.data))
+      setIsLoading(false)
+      setPhone('')
+      setPassWord('')
+      navigation.navigate('Home')
+    }
+    else if(response?.data?.message == "Invalid phone"){
+      setPhoneErr("Account doesn't exist with this phone")
+      setIsLoading(false)
+    }
+    else if(response?.data?.message == "Invalid Password"){
+      setPassWordErr("Password is incorrect")
+      setIsLoading(false)
+    }
+
   }
   const validateHandler = () => {
     let isValid = true
 
-    if(!email && !passWord){
-      setEmailErr('Email is required')
+    if(!phone && !passWord){
+      setPhoneErr('phone is required')
       setPassWordErr('Password is required')
       isValid = false
       return
     }
-    if(!email.match(/\S+@\S+\.\S+/) || !email){
-      setEmailErr('Please input a valid email')
+    if (!(/^\d+$/).test(phone)) {
+      setPhoneErr('Please Enter valid phone number')
       isValid = false
-      
+      setIsLoading(false)
+      return;
     }
     if(!passWord){
       setPassWordErr('Enter Valid Password')
@@ -64,18 +97,18 @@ const Login = ({navigation}) => {
           />
           
           <View style={{paddingHorizontal: 20, marginTop: 10}}>
-              <WashInput
-              icon1={<AntDesign name='mail'  color={COLORS.GRAY} size={22}/>}
+          <WashInput
+              icon1={<AntDesign name='phone'  color={COLORS.GRAY} size={22}/>}
               onChangeText={(text) => {
-                setEmail(text.trim())
-                setEmailErr('')
+                setPhone(text.trimStart())
+                setPhoneErr('')
               }}
-              placeholder="xyz@gmail.com"
-              keyboardType="default"
-              label="Email"
-              customStyle2={{marginTop: 4}}
-              error={emailErr}
-              defaultValue={email}
+              placeholder="Enter phone"
+              keyboardType="number-pad"
+              label="Phone"
+              error={phoneErr}
+              defaultValue={phone}
+              maxLength={10}
             />
             <WashInput
               icon1={<Feather name='lock'  color={COLORS.GRAY} size={22}/>}
@@ -86,7 +119,7 @@ const Login = ({navigation}) => {
               placeholder="Password"
               keyboardType="default"
               // customStyle2={{marginTop: 4}}
-              customStyle3={{marginTop: 20}}
+              customStyle3={{marginTop: 8}}
               label="Password"
               secureTextEntry={true}
               error={passWordErr}
