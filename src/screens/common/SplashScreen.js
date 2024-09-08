@@ -1,24 +1,18 @@
-import { View, Text, Image, Dimensions } from 'react-native'
+import { View, Text, Image, Dimensions, StatusBar } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
+import WelcomeHeader from '../../components/Headers/WelcomeHeader';
 const {width: screenWidth, height: screenHeight} = Dimensions.get('screen');
-
 
 const SplashScreen = () => {
   return (
     <SafeAreaView  style={{flex: 1, backgroundColor: 'white'}}>
-        <View style={{width: screenWidth}}>
-            <Image
-                resizeMode='contain'
-                style={{height: 190, width: 150, position: 'absolute', top: 0, left: 0}}
-                source={require('../../assets/images/topLeftSmall.png')}
-            />
-            <Image
-            resizeMode='contain'
-            style={{height: 200, width: 140, position: 'absolute', top: 0, right: 0, borderRadius: 40}}
-            source={require('../../assets/images/topRightLarge.png')}
-           />
-        </View>
+          <StatusBar
+          translucent={false}
+          barStyle={'light-content'}
+          backgroundColor="white" 
+          />
+        <WelcomeHeader/>
 
         <View style={{width: screenWidth, height: 310, marginVertical: 'auto'}}>
            <Image
