@@ -8,7 +8,7 @@ const AuthHeader = ({title, suggestionTxt, suggestionTxt2}) => {
     <View>
         <AppLogoContainer
           width={220}
-          height={140}
+          height={120}
           marginVertical={0}
           marginTop="10%"
           marginHorizontal='auto'

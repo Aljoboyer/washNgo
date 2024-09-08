@@ -14,9 +14,12 @@ import { AuthStyles } from '../../Styles/AuthStyles'
 import AuthBottomContainer from '../../components/AuthBottomContainer/AuthBottomContainer'
 const {width: screenWidth, height: screenHeight} = Dimensions.get('screen');
 
-const Login = ({navigation}) => {
+const SignUp = ({navigation}) => {
+  const [checked, setChecked] = useState(false)
   const [email, setEmail] = useState('')
   const [passWord, setPassWord] = useState('')
+  const [name, setName] = useState('')
+
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
@@ -27,12 +30,21 @@ const Login = ({navigation}) => {
         />
       <KeyboardAvoidingView >
           <AuthHeader
-            title="Sign In"
-            suggestionTxt="Hi ! Welcome back, you"
-            suggestionTxt2="have been missed"
+            title="Sign Up"
+            suggestionTxt="Fill in the below form and add life to"
+            suggestionTxt2="your car!"
           />
           
           <View style={{paddingHorizontal: 20, marginTop: 10}}>
+          <WashInput
+              icon1={<Feather name='user'  color={COLORS.GRAY} size={22}/>}
+              onChangeText={(text) => setEmail(email)}
+              placeholder="Enter your name"
+              keyboardType="default"
+              label="Name"
+              customStyle2={{marginTop: 4}}
+              
+            />
               <WashInput
               icon1={<AntDesign name='mail'  color={COLORS.GRAY} size={22}/>}
               onChangeText={(text) => setEmail(email)}
@@ -40,6 +52,8 @@ const Login = ({navigation}) => {
               keyboardType="default"
               label="Email"
               customStyle2={{marginTop: 4}}
+              customStyle3={{marginTop: 10}}
+
             />
             <WashInput
               icon1={<Feather name='lock'  color={COLORS.GRAY} size={22}/>}
@@ -47,61 +61,57 @@ const Login = ({navigation}) => {
               placeholder="Password"
               keyboardType="default"
               // customStyle2={{marginTop: 4}}
-              customStyle3={{marginTop: 20}}
+              customStyle3={{marginTop: 10}}
               label="Password"
               secureTextEntry={true}
               icon2={<SimpleLineIcons name='eye'  color={COLORS.GRAY} size={22}/>}
             />
 
-            <TouchableOpacity style={Commonstyles.FlexEnd}>
-                <WashText title="Forgot password ?" preset='title3' customStyle={{color: COLORS.DARKBLACK, fontSize: 14,  textDecorationLine: "underline", marginTop: 10}}/>
-            </TouchableOpacity>
+            <View style={[Commonstyles.FlexStart, {marginTop: 8}]}>
+                <TouchableOpacity onPress={() => setChecked(!checked)}>
+                    {
+                        checked ? <AntDesign name='checksquare' size={22} color={COLORS.SKYBLUE}/> :  <Feather name='square' size={22}/>
+                    }
+                   
+                </TouchableOpacity>
+                <WashText
+                    title="Agree with" 
+                    preset='title1'
+                    customStyle={{marginLeft: 4, color: COLORS.DARKBLACK, fontSize: 14}}
+                /> 
+                <WashText
+                title="Terms & Conditions" 
+                preset='small'
+                />
+            </View>
+
             <WashButton
-              title="Sign In"
+              title="Sign Up"
               customBtnStyle={{alignSelf: 'center', marginTop: 20}}
               onPress={() => navigation.navigate('Login')}
             />
-
-            <View style={[Commonstyles.FlexCenter, {marginTop: 10}]}>
-                <View style={AuthStyles.emptyView}></View>
-
-                <WashText title="or" preset='small' customStyle={{color: COLORS.DARKBLACK, fontSize: 14, marginHorizontal: 5}}/>
-
-                <View style={AuthStyles.emptyView}></View>
-
-            </View>
-
-            <View style={[Commonstyles.FlexCenter, {marginTop: 10}]}>
-                <View style={[AuthStyles.iconView, Commonstyles.FlexCenter]}>
-                    <AntDesign name='google' size={22}/>
-                </View>
-
-                <View style={[AuthStyles.iconView, Commonstyles.FlexCenter, {marginLeft: 10}]}>
-                  <AntDesign name='apple1' size={22}/>  
-                </View>
-
-            </View>
 
           </View>
           
       </KeyboardAvoidingView>
 
       <AuthBottomContainer 
-      text1="Don’t have an account?"
-      text2="Sign Up"
+      text1="Already have an account?"
+      text2="Sign In"
       text3="By login or sign up, you agree to our terms of use and"
       text4="privacy policy"
-      onPressCall={() => navigation.navigate('SignUp')}
+      onPressCall={() => navigation.navigate('Login')}
+
       />
         <View style={{width: screenWidth}}>
             <Image
             resizeMode='contain'
-            style={{height: 130, width: 180, position: 'absolute', bottom: -20, left: 0, borderRadius: 30, zIndex: -1}}
-            source={require('../../assets/images/bottomLeftLarge.png')}
+            style={{height: 100, width: 140, position: 'absolute', bottom: -30, right: 0, borderRadius: 30, zIndex: -1}}
+            source={require('../../assets/images/bottomRightLargeGreen.png')}
            />
         </View>
     </SafeAreaView>
   )
 }
 
-export default Login
+export default SignUp
