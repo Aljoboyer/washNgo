@@ -128,7 +128,7 @@ const SignUp = ({navigation}) => {
               label="Phone"
               error={phoneErr}
               defaultValue={phone}
-              maxLength={10}
+              // maxLength={10}
             />
 
             <WashInput

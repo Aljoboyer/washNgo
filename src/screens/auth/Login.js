@@ -108,7 +108,7 @@ const Login = ({navigation}) => {
               label="Phone"
               error={phoneErr}
               defaultValue={phone}
-              maxLength={10}
+              // maxLength={10}
             />
             <WashInput
               icon1={<Feather name='lock'  color={COLORS.GRAY} size={22}/>}
@@ -132,9 +132,13 @@ const Login = ({navigation}) => {
             </TouchableOpacity>
 
             <WashButton
-              title="Sign In"
+              title={isLoading ? 'Loading...' : 'Sign In'}
               customBtnStyle={{alignSelf: 'center', marginTop: 20}}
-              onPress={() => validateHandler()}
+              onPress={() => {
+                if(!isLoading){
+                  validateHandler()
+                }
+              }}
             />
 
             <View style={[Commonstyles.FlexCenter, {marginTop: 10}]}>
