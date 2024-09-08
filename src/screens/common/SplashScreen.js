@@ -2,6 +2,7 @@ import { View, Text, Image, Dimensions, StatusBar } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import WelcomeHeader from '../../components/Headers/WelcomeHeader';
+import AppLogoContainer from '../../components/AppLogoContainer/AppLogoContainer';
 const {width: screenWidth, height: screenHeight} = Dimensions.get('screen');
 
 const SplashScreen = () => {
@@ -13,15 +14,8 @@ const SplashScreen = () => {
           backgroundColor="white" 
           />
         <WelcomeHeader/>
-
-        <View style={{width: screenWidth, height: 310, marginVertical: 'auto'}}>
-           <Image
-            resizeMode='contain'
-            style={{height: '100%', width: '100%'}}
-            source={require('../../assets/images/applogo.png')}
-           />
-        </View>
-
+        <AppLogoContainer/>
+        
         <View style={{width: screenWidth}}>
             <Image
             resizeMode='contain'

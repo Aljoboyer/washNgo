@@ -7,9 +7,9 @@ import WashButton from '../../components/WashButton/WashButton';
 import { Commonstyles } from '../../Styles/CommonStyles';
 import { LetsStartScreenStyle } from '../../Styles/LetsStartScreenStyle';
 import { COLORS } from '../../theme/colors';
-const {width: screenWidth, height: screenHeight} = Dimensions.get('screen');
+import AppLogoContainer from '../../components/AppLogoContainer/AppLogoContainer';
 
-const LetsStart = () => {
+const LetsStart = ({navigation}) => {
   return (
     <SafeAreaView  style={{flex: 1, backgroundColor: 'white'}}>
       <StatusBar
@@ -20,14 +20,12 @@ const LetsStart = () => {
         hidden={false}
         />
       <WelcomeHeader/>
-      
-        <View style={{width: screenWidth, height: 310, marginTop: 150}}>
-           <Image
-            resizeMode='contain'
-            style={{height: '100%', width: '100%'}}
-            source={require('../../assets/images/applogo.png')}
-           />
 
+        <View style={{marginTop: 150}}>
+
+          <AppLogoContainer
+            height={310}
+          />
           <View style={LetsStartScreenStyle.textViewStyle}>
               <WashText
                 title="Sparkle & Shine  Transform" 
@@ -38,10 +36,11 @@ const LetsStart = () => {
                 preset='p'
               />
           </View>
-
+        
           <WashButton
             title="Let's Start"
             customBtnStyle={{alignSelf: 'center'}}
+            onPress={() => navigation.navigate('Login')}
           />
           
           <View style={[LetsStartScreenStyle.textViewStyle, Commonstyles.FlexCenter]}>
@@ -57,9 +56,7 @@ const LetsStart = () => {
               />
               </Pressable>
           </View>
-
         </View>
-        
     </SafeAreaView>
   )
 }

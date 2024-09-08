@@ -19,6 +19,13 @@ export const Commonstyles = StyleSheet.create({
         justifyContent:"flex-start",
         alignItems: 'center'
     },
+    FlexEnd:{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent:"flex-end",
+        alignItems: 'center',
+       
+    },
     FlexColumnCenter:{
         display: 'flex',
         flexDirection: 'column',

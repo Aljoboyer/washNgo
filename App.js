@@ -17,7 +17,7 @@ function App() {
   const [splashScreenShow, setSplashScreenShow] = useState(true)
 
   useEffect(() => {
-    setTimeout(() => setSplashScreenShow(false), 1500)
+    setTimeout(() => setSplashScreenShow(false), 1000)
   },[])
 
   return (
