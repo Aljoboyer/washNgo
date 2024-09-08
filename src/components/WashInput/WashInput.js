@@ -1,9 +1,9 @@
-import { View, StyleSheet, TextInput } from 'react-native'
+import { View, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { COLORS } from '../../theme/colors';
 import WashText from '../WashText/WashText';
 
-const WashInput = ({placeholder, numberOfLines, onChangeText, customStyle, keyboardType, maxLength,error, secureTextEntry = false, customStyle2, icon1, icon2, label, customStyle3, defaultValue}) => {
+const WashInput = ({placeholder, numberOfLines, onChangeText, customStyle, keyboardType, maxLength,error, secureTextEntry = false, customStyle2, icon1, icon2, label, customStyle3, defaultValue, passWordPress}) => {
 
   return (
    <View style={customStyle3}>
@@ -23,7 +23,7 @@ const WashInput = ({placeholder, numberOfLines, onChangeText, customStyle, keybo
             secureTextEntry={secureTextEntry}
             value={defaultValue}
         />
-        {icon2 && icon2}
+        {icon2 && <TouchableOpacity onPress={passWordPress}>{icon2}</TouchableOpacity>}
       </View>
       <WashText title={error} preset='small' customStyle={{color: 'red', fontSize: 12}}/>
    </View>

@@ -14,7 +14,10 @@ const SplashScreen = () => {
           backgroundColor="white" 
           />
         <WelcomeHeader/>
-        <AppLogoContainer/>
+        <AppLogoContainer
+          marginVertical='auto'
+          marginTop='50%'
+        />
         
         <View style={{width: screenWidth}}>
             <Image

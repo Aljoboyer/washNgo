@@ -1,4 +1,4 @@
-import { View, StatusBar, SafeAreaView, TouchableOpacity,Dimensions, Image, KeyboardAvoidingView } from 'react-native'
+import { View, StatusBar, SafeAreaView, TouchableOpacity,Dimensions, Image, KeyboardAvoidingView, ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import AuthHeader from '../../components/AuthHeader/AuthHeader'
 import WashInput from '../../components/WashInput/WashInput'
@@ -17,6 +17,7 @@ const {width: screenWidth, height: screenHeight} = Dimensions.get('screen');
 
 const SignUp = ({navigation}) => {
   const nameRegex = /^[A-Za-z\s]*$/
+  const [passwordShow, setPasswordShow] = useState(false)
   const dispatch = useDispatch()
   const [checked, setChecked] = useState(false)
   const [phone, setPhone] = useState('')
@@ -97,7 +98,8 @@ const SignUp = ({navigation}) => {
           backgroundColor="white" 
         />
       <KeyboardAvoidingView >
-          <AuthHeader
+        <ScrollView>
+        <AuthHeader
             title="Sign Up"
             suggestionTxt="Fill in the below form and add life to"
             suggestionTxt2="your car!"
@@ -140,16 +142,17 @@ const SignUp = ({navigation}) => {
               placeholder="Password"
               keyboardType="default"
               label="Password"
-              secureTextEntry={true}
               error={passWordErr}
               defaultValue={passWord}
-              icon2={<SimpleLineIcons name='eye'  color={COLORS.GRAY} size={22}/>}
+              secureTextEntry={passwordShow ? false : true}
+              passWordPress={() => setPasswordShow(!passwordShow)}
+              icon2={passwordShow ? <SimpleLineIcons name='eye'  color={COLORS.GRAY} size={22}/> : <Feather name='eye-off'  color={COLORS.GRAY} size={22}/>}
             />
 
             <View style={[Commonstyles.FlexStart, {marginTop: 8}]}>
                 <TouchableOpacity onPress={() => setChecked(!checked)}>
                     {
-                        checked ? <AntDesign name='checksquare' size={22} color={COLORS.SKYBLUE}/> :  <Feather name='square' size={22}/>
+                        checked ? <AntDesign name='checksquare' size={22} color={COLORS.SKYBLUE}/> :  <Feather name='square' size={22} color={COLORS.DARKBLACK}/>
                     }
                    
                 </TouchableOpacity>
@@ -175,6 +178,8 @@ const SignUp = ({navigation}) => {
             />
 
           </View>
+        </ScrollView>
+          
           
       </KeyboardAvoidingView>
 

@@ -39,7 +39,7 @@ const LetsStart = ({navigation}) => {
         
           <WashButton
             title="Let's Start"
-            customBtnStyle={{alignSelf: 'center'}}
+            customBtnStyle={{alignSelf: 'center', marginTop: 40}}
             onPress={() => navigation.navigate('Login')}
           />
           

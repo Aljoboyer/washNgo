@@ -13,7 +13,18 @@ const AppNavigator = () => {
 
     return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName={userData?.name ? 'Home' : 'LetsStart'}>
+        {
+          userData?.name ?  <Stack.Navigator initialRouteName="Home">
+          
+           <Stack.Screen
+              options={{
+              headerShown: false,
+              }}
+              name="Home"
+              component={Home}
+          />
+          
+      </Stack.Navigator> : <Stack.Navigator initialRouteName={'LetsStart'}>
             {/* Common Screens */}
             <Stack.Screen
                 options={{
@@ -37,15 +48,8 @@ const AppNavigator = () => {
                 name="SignUp"
                 component={SignUp}
             />
-             <Stack.Screen
-                options={{
-                headerShown: false,
-                }}
-                name="Home"
-                component={Home}
-            />
-            
         </Stack.Navigator>
+        }
       </NavigationContainer>
     );
   };

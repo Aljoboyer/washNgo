@@ -19,7 +19,7 @@ const {width: screenWidth, height: screenHeight} = Dimensions.get('screen');
 
 const Login = ({navigation}) => {
   const dispatch = useDispatch()
-
+  const [passwordShow, setPasswordShow] = useState(false)
   const [phone, setPhone] = useState('')
   const [passWord, setPassWord] = useState('')
 
@@ -89,7 +89,9 @@ const Login = ({navigation}) => {
           barStyle={'dark-content'}
           backgroundColor="white" 
         />
-      <KeyboardAvoidingView style={{backgroundColor: 'white'}}>
+      <KeyboardAvoidingView behavior={'height'} // Adjust behavior for iOS and Android
+      keyboardVerticalOffset={0} style={{backgroundColor: 'white'}}>
+          <ScrollView>
           <AuthHeader
             title="Sign In"
             suggestionTxt="Hi ! Welcome back, you"
@@ -121,10 +123,11 @@ const Login = ({navigation}) => {
               // customStyle2={{marginTop: 4}}
               customStyle3={{marginTop: 8}}
               label="Password"
-              secureTextEntry={true}
               error={passWordErr}
               defaultValue={passWord}
-              icon2={<SimpleLineIcons name='eye'  color={COLORS.GRAY} size={22}/>}
+              secureTextEntry={passwordShow ? false : true}
+              passWordPress={() => setPasswordShow(!passwordShow)}
+              icon2={passwordShow ? <SimpleLineIcons name='eye'  color={COLORS.GRAY} size={22}/> : <Feather name='eye-off'  color={COLORS.GRAY} size={22}/>}
             />
 
             <TouchableOpacity style={[Commonstyles.FlexEnd, {backgroundColor: 'white'}]}>
@@ -152,17 +155,17 @@ const Login = ({navigation}) => {
 
             <View style={[Commonstyles.FlexCenter, {marginTop: 10}]}>
                 <View style={[AuthStyles.iconView, Commonstyles.FlexCenter]}>
-                    <AntDesign name='google' size={22}/>
+                    <AntDesign name='google' size={22} color="black"/>
                 </View>
 
                 <View style={[AuthStyles.iconView, Commonstyles.FlexCenter, {marginLeft: 10}]}>
-                  <AntDesign name='apple1' size={22}/>  
+                  <AntDesign name='apple1' size={22} color="black"/>  
                 </View>
 
             </View>
 
           </View>
-          
+          </ScrollView>
       </KeyboardAvoidingView>
 
       <AuthBottomContainer 
